@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Свадьба Михаила и Гаяне</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Свадьба Александра и Елены</title>
     
     <!-- Шрифты -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +16,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body, html {
@@ -22,6 +24,9 @@
             font-family: 'Montserrat', sans-serif;
             scroll-behavior: smooth;
             color: #1a1a1a;
+            width: 100%;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch; /* улучшение плавности прокрутки на iOS */
         }
 
         .container {
@@ -30,13 +35,15 @@
             margin: 0 auto;
             background-color: #FFFFFF;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* ---------- АНИМАЦИИ ПОЯВЛЕНИЯ ---------- */
+        /* Улучшение отзывчивости прокрутки — убираем возможные задержки */
         .fade-section {
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: opacity, transform;
         }
 
         .fade-section.visible {
@@ -48,6 +55,7 @@
             opacity: 0;
             transform: scale(0.96);
             transition: opacity 1s ease, transform 1s ease;
+            will-change: opacity, transform;
         }
 
         .photo-wrapper.visible {
@@ -403,7 +411,7 @@
             opacity: 0.8;
         }
 
-        /* ---------- БЛОК 7: ТАЙМЕР ОБРАТНОГО ОТСЧЁТА ---------- */
+        /* ---------- БЛОК 7: ТАЙМЕР ОБРАТНОГО ОТСЧЁТА (ФОТО КВАДРАТНОЕ) ---------- */
         .countdown-section {
             background-color: #1a1a1a;
             color: #ffffff;
@@ -426,17 +434,16 @@
             margin-bottom: 30px;
         }
 
-       /* ---------- БЛОК 7: ТАЙМЕР ОБРАТНОГО ОТСЧЁТА (фото квадратное) ---------- */
-.countdown-photo {
-    width: 120px;
-    height: 120px;
-    border-radius: 8px;  /* мягкое скругление, как у фотокарточки */
-    object-fit: cover;
-    margin: 0 auto 35px;
-    display: block;
-    border: 2px solid rgba(255,255,255,0.2);
-    filter: grayscale(100%);
-}
+        .countdown-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;  /* мягкое скругление, как у фотокарточки */
+            object-fit: cover;
+            margin: 0 auto 35px;
+            display: block;
+            border: 2px solid rgba(255,255,255,0.2);
+            filter: grayscale(100%);
+        }
 
         .timer-grid {
             display: flex;
@@ -494,11 +501,11 @@
         <section class="block-1 fade-section" id="section1">
             <div class="date-top">12.09.2026</div>
             <div class="photo-wrapper" id="mainPhotoWrapper">
-                <img src="молодожены.jpg" alt="Михаил и Гаяне" class="couple-photo">
+                <img src="молодожены.jpg" alt="Александр и Елена" class="couple-photo">
             </div>
             <div class="names-section">
-                <div class="line"><span class="name">МИХАИЛ</span><span class="script-text">and</span></div>
-                <div class="line"><span class="script-text">Wedding</span><span class="name">ГАЯНЕ</span></div>
+                <div class="line"><span class="name">АЛЕКСАНДР</span><span class="script-text">and</span></div>
+                <div class="line"><span class="script-text">Wedding</span><span class="name">ЕЛЕНА</span></div>
             </div>
             <div class="player-container">
                 <div class="audio-btn" id="musicToggle">
@@ -654,11 +661,10 @@
             </form>
         </section>
 
-        <!-- БЛОК 7: ТАЙМЕР ДО СВАДЬБЫ -->
+        <!-- БЛОК 7: ТАЙМЕР ДО СВАДЬБЫ (квадратное фото) -->
         <section class="countdown-section fade-section" id="section7">
             <h2 class="countdown-title">До встречи</h2>
             <div class="countdown-subtitle">we are waiting</div>
-            <!-- Можно использовать то же фото пары или отдельное -->
             <img src="молодожены.jpg" alt="До встречи" class="countdown-photo">
             
             <div class="timer-grid" id="timer">
@@ -753,8 +759,7 @@
             });
 
             // --- ТАЙМЕР ОБРАТНОГО ОТСЧЁТА ---
-            // Устанавливаем дату свадьбы: 12 сентября 2026 года, 15:00 (по местному времени)
-            const weddingDate = new Date(2026, 8, 12, 15, 0, 0).getTime(); // месяц 8 = сентябрь
+            const weddingDate = new Date(2026, 8, 12, 15, 0, 0).getTime();
 
             const daysEl = document.getElementById('days');
             const hoursEl = document.getElementById('hours');
@@ -766,7 +771,6 @@
                 const distance = weddingDate - now;
 
                 if (distance < 0) {
-                    // Если дата прошла — показываем нули и останавливаем обновление
                     daysEl.innerText = '00';
                     hoursEl.innerText = '00';
                     minutesEl.innerText = '00';
@@ -785,11 +789,8 @@
                 secondsEl.innerText = seconds < 10 ? '0' + seconds : seconds;
             }
 
-            // Запускаем таймер и обновляем каждую секунду
             updateTimer();
             const timerInterval = setInterval(updateTimer, 1000);
-
-            // Очистка интервала при необходимости (для хорошего тона)
             window.addEventListener('beforeunload', () => clearInterval(timerInterval));
 
             // --- ОБРАБОТКА АНКЕТЫ ---
