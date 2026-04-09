@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Свадьба Михаила и Гаяне</title>
+    
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            background-color: #FFFFFF;
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+            color: #1a1a1a;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            overflow-x: hidden;
+        }
+
+        /* ---------- АНИМАЦИИ ПОЯВЛЕНИЯ ---------- */
+        .fade-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .fade-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .photo-wrapper {
+            opacity: 0;
+            transform: scale(0.96);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .photo-wrapper.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ---------- БЛОК 1 (Приветствие) ---------- */
+        .block-1 {
+            padding: 40px 20px 60px;
+            text-align: center;
+            background-color: #FFFFFF;
+        }
+
+        .date-top { font-size: 18px; letter-spacing: 2px; margin-bottom: 25px; color: #333; }
+        .photo-wrapper { width: 100%; margin-bottom: 40px; }
+        .couple-photo { width: 100%; display: block; filter: grayscale(100%); border-radius: 0; }
+
+        .names-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 30px; }
+        .line { display: flex; align-items: baseline; gap: 10px; }
+        .name { font-family: 'Playfair Display', serif; font-size: clamp(24px, 7vw, 32px); text-transform: uppercase; letter-spacing: 2px; }
+        .script-text { font-family: 'Great Vibes', cursive; font-size: clamp(32px, 10vw, 45px); color: #555; }
+
+        .player-container { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .audio-btn { width: 50px; height: 50px; border: 1px solid #1a1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; background: transparent; transition: background 0.2s; }
+        .audio-btn:hover { background-color: #f5f5f5; }
+        .audio-btn svg { width: 20px; height: 20px; fill: #1a1a1a; }
+        .player-label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #888; }
+
+        /* ---------- БЛОК 2 (Дата и Сердце) ---------- */
+        .block-2 {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        .title-2 { font-family: 'Playfair Display', serif; font-size: 26px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; }
+        .description { font-weight: 300; font-size: 15px; line-height: 1.8; margin-bottom: 60px; color: #ccc; }
+        .calendar-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid rgba(255,255,255,0.15); border-bottom: 1px solid rgba(255,255,255,0.15); margin: 0 -20px; }
+        .grid-item { padding: 30px 5px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 1px solid rgba(255,255,255,0.15); }
+        .grid-item:last-child { border-right: none; }
+        .day-val { font-family: 'Playfair Display', serif; font-size: 50px; }
+        .m-text { font-size: 13px; text-transform: uppercase; margin-bottom: 5px; }
+        .y-text { font-family: 'Playfair Display', serif; font-size: 20px; }
+        .heart-icon { width: 35px; height: 35px; fill: white; }
+
+        /* ---------- БЛОК 3 (Локация) ---------- */
+        .block-3 {
+            background-color: #FFFFFF;
+            padding: 60px 0 0 0;
+            text-align: center;
+        }
+        .location-info { padding: 0 20px 40px; }
+        .city-name { font-size: 18px; margin-bottom: 5px; color: #333; }
+        .venue-address { font-weight: 300; font-size: 16px; color: #666; margin-bottom: 25px; line-height: 1.5; }
+        
+        .map-button {
+            display: inline-block;
+            background-color: #1a1a1a;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: lowercase;
+            letter-spacing: 1px;
+            transition: opacity 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .map-button:hover { opacity: 0.8; }
+        
+        .venue-photo-wrapper {
+            width: 100%;
+            margin-top: 40px;
+            line-height: 0;
+        }
+        .venue-photo { width: 100%; height: auto; display: block; }
+
+        /* ---------- БЛОК 4 (Программа дня) ---------- */
+        .section-program {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            padding: 60px 0 0 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .program-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 50px;
+            color: #1a1a1a;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 60px;
+        }
+
+        .event {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .time {
+            font-size: 14px;
+            font-weight: 400;
+            color: #666;
+        }
+
+        .event-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #1a1a1a;
+        }
+
+        .timeline-line {
+            width: 1px;
+            height: 40px;
+            background-color: #ccc;
+            margin: 5px 0;
+        }
+
+        /* ---------- БЕГУЩАЯ СТРОКА ---------- */
+        .marquee-container {
+            width: 100%;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            padding: 15px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            display: flex;
+        }
+
+        .marquee-wrapper {
+            display: flex;
+            animation: scroll 20s linear infinite;
+        }
+
+        .marquee-item {
+            flex-shrink: 0;
+            padding: 0 20px;
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* ---------- БЛОК 5: ДРЕСС-КОД ДЕТАЛИ (4 цвета) ---------- */
+        .dresscode-details {
+            background-color: #FFFFFF;
+            padding: 50px 20px 60px;
+            text-align: center;
+        }
+
+        .dresscode-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+
+        .dresscode-subtitle {
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            color: #666;
+            margin-bottom: 35px;
+        }
+
+        .dresscode-description {
+            font-weight: 300;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #555;
+            max-width: 380px;
+            margin: 0 auto 45px;
+        }
+
+        .color-palette {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 25px 30px;
+            margin-bottom: 20px;
+        }
+
+        .color-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 70px;
+        }
+
+        .color-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .color-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #444;
+        }
+
+        .color-hex {
+            font-size: 10px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .dresscode-note {
+            margin-top: 40px;
+            font-style: italic;
+            font-size: 13px;
+            color: #888;
+            border-top: 1px dashed #ddd;
+            padding-top: 30px;
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ---------- БЛОК 6: АНКЕТА ГОСТЯ ---------- */
+        .rsvp-section {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 60px 25px 70px;
+            box-sizing: border-box;
+            background-color: #FFFFFF;
+        }
+
+        .rsvp-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #1a1a1a;
+        }
+
+        .form-group {
+            margin-bottom: 35px;
+        }
+
+        label.main-label {
+            display: block;
+            font-size: 15px;
+            margin-bottom: 15px;
+            font-weight: 400;
+            color: #1a1a1a;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #1a1a1a;
+            background: transparent;
+            padding: 10px 0;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            outline: none;
+            color: #1a1a1a;
+        }
+
+        ::placeholder {
+            color: #aaa;
+            font-weight: 300;
+        }
+
+        .option-container {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            font-size: 15px;
+            user-select: none;
+            font-weight: 300;
+            color: #1a1a1a;
+        }
+
+        .option-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: transparent;
+            border: 1px solid #1a1a1a;
+            transition: background 0.1s;
+        }
+
+        .radio .checkmark {
+            border-radius: 50%;
+        }
+
+        .option-container input:checked ~ .checkmark {
+            background-color: #1a1a1a;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            max-width: 250px;
+            margin: 50px auto 0;
+            background-color: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            font-size: 14px;
+            text-transform: lowercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* ---------- БЛОК 7: ТАЙМЕР ОБРАТНОГО ОТСЧЁТА ---------- */
+        .countdown-section {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            padding: 60px 20px 70px;
+            text-align: center;
+        }
+
+        .countdown-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .countdown-subtitle {
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+
+       /* ---------- БЛОК 7: ТАЙМЕР ОБРАТНОГО ОТСЧЁТА (фото квадратное) ---------- */
+.countdown-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;  /* мягкое скругление, как у фотокарточки */
+    object-fit: cover;
+    margin: 0 auto 35px;
+    display: block;
+    border: 2px solid rgba(255,255,255,0.2);
+    filter: grayscale(100%);
+}
+
+        .timer-grid {
+            display: flex;
+            justify-content: center;
+            gap: 15px 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .timer-item {
+            min-width: 60px;
+        }
+
+        .timer-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 400;
+            line-height: 1;
+        }
+
+        .timer-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #aaa;
+            margin-top: 8px;
+        }
+
+        .countdown-message {
+            font-weight: 300;
+            font-size: 16px;
+            color: #ddd;
+            max-width: 300px;
+            margin: 0 auto;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 30px;
+        }
+
+        /* Мелкие отступы */
+        .spacer {
+            height: 10px;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="klava.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        
+        <!-- БЛОК 1 -->
+        <section class="block-1 fade-section" id="section1">
+            <div class="date-top">12.09.2026</div>
+            <div class="photo-wrapper" id="mainPhotoWrapper">
+                <img src="молодожены.jpg" alt="Михаил и Гаяне" class="couple-photo">
+            </div>
+            <div class="names-section">
+                <div class="line"><span class="name">МИХАИЛ</span><span class="script-text">and</span></div>
+                <div class="line"><span class="script-text">Wedding</span><span class="name">ГАЯНЕ</span></div>
+            </div>
+            <div class="player-container">
+                <div class="audio-btn" id="musicToggle">
+                    <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </div>
+                <span class="player-label">Play Music</span>
+            </div>
+        </section>
+
+        <!-- БЛОК 2 -->
+        <section class="block-2 fade-section" id="section2">
+            <h2 class="title-2">Дорогие наши<br>родные и близкие!</h2>
+            <p class="description">В нашей жизни произойдёт важное и радостное событие — мы станем семьёй. И нам очень хочется разделить этот особенный день с вами!</p>
+            <div class="calendar-grid">
+                <div class="grid-item"><span class="day-val">12</span></div>
+                <div class="grid-item month-year"><span class="m-text">Сентябрь</span><span class="y-text">2026</span></div>
+                <div class="grid-item">
+                    <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- БЛОК 3 -->
+        <section class="block-3 fade-section" id="section3">
+            <div class="location-info">
+                <div class="city-name">г. Минск</div>
+                <div class="venue-address">
+                    Ресторан «Усадьба»<br>
+                    ул. Ваньковичей, 12
+                </div>
+                <a href="https://yandex.by/maps/" target="_blank" class="map-button">открыть карту</a>
+            </div>
+            <div class="venue-photo-wrapper">
+                <img src="усадьба.jpg" alt="Ресторан Усадьба" class="venue-photo">
+            </div>
+        </section>
+
+        <!-- БЛОК 4: ПРОГРАММА ДНЯ -->
+        <section class="section-program fade-section" id="section4">
+            <div class="program-content">
+                <h2 class="program-title">Программа дня</h2>
+                <div class="timeline">
+                    <div class="event"><span class="time">15:00</span><span class="event-name">Сбор гостей</span></div>
+                    <div class="timeline-line"></div>
+                    <div class="event"><span class="time">15:50</span><span class="event-name">Церемония</span></div>
+                    <div class="timeline-line"></div>
+                    <div class="event"><span class="time">16:30</span><span class="event-name">Банкет</span></div>
+                    <div class="timeline-line"></div>
+                    <div class="event"><span class="time">23:30</span><span class="event-name">Финал вечера</span></div>
+                </div>
+            </div>
+            <div class="marquee-container">
+                <div class="marquee-wrapper">
+                    <div class="marquee-item"> • ДРЕСС-КОД • ДРЕСС-КОД • ДРЕСС-КОД • ДРЕСС-КОД</div>
+                    <div class="marquee-item"> • ДРЕСС-КОД • ДРЕСС-КОД • ДРЕСС-КОД • ДРЕСС-КОД</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- БЛОК 5: ДРЕСС-КОД ПАЛИТРА -->
+        <section class="dresscode-details fade-section" id="section5">
+            <h3 class="dresscode-title">Палитра вечера</h3>
+            <div class="dresscode-subtitle">Dress code</div>
+            <p class="dresscode-description">
+                Мы будем рады, если вы поддержите цветовую гамму нашего торжества. 
+                Выберите наряд в одном из этих благородных оттенков.
+            </p>
+            <div class="color-palette">
+                <div class="color-item">
+                    <div class="color-circle" style="background-color: #D8A7A7;"></div>
+                    <span class="color-name">Пыльная роза</span>
+                    <span class="color-hex">#D8A7A7</span>
+                </div>
+                <div class="color-item">
+                    <div class="color-circle" style="background-color: #B2B8A5;"></div>
+                    <span class="color-name">Шалфей</span>
+                    <span class="color-hex">#B2B8A5</span>
+                </div>
+                <div class="color-item">
+                    <div class="color-circle" style="background-color: #EEDFB4;"></div>
+                    <span class="color-name">Шампань</span>
+                    <span class="color-hex">#EEDFB4</span>
+                </div>
+                <div class="color-item">
+                    <div class="color-circle" style="background-color: #5A5E62;"></div>
+                    <span class="color-name">Графит</span>
+                    <span class="color-hex">#5A5E62</span>
+                </div>
+            </div>
+            <p class="dresscode-note">
+                Просим воздержаться от белого и черного total look — 
+                пусть эти цвета останутся только для нас.
+            </p>
+        </section>
+
+        <!-- БЛОК 6: АНКЕТА ГОСТЯ -->
+        <section class="rsvp-section fade-section" id="section6">
+            <h2 class="rsvp-title">Анкета гостя</h2>
+
+            <form id="rsvpForm">
+                <div class="form-group">
+                    <label class="main-label">Ваше имя и фамилия</label>
+                    <input type="text" name="name" placeholder="Введите здесь..." required>
+                </div>
+
+                <div class="form-group">
+                    <label class="main-label">Присутствие</label>
+                    <label class="option-container radio">Обязательно буду
+                        <input type="radio" name="presence" value="yes" checked>
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="option-container radio">К сожалению, не получится
+                        <input type="radio" name="presence" value="no">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="main-label">Предпочтения по напиткам</label>
+                    <label class="option-container">Игристое
+                        <input type="checkbox" name="drinks" value="sparkling">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="option-container">Вино красное
+                        <input type="checkbox" name="drinks" value="red-wine">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="option-container">Вино белое
+                        <input type="checkbox" name="drinks" value="white-wine">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="option-container">Виски
+                        <input type="checkbox" name="drinks" value="whiskey">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="option-container">Водка
+                        <input type="checkbox" name="drinks" value="vodka">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="option-container">Безалкогольные напитки
+                        <input type="checkbox" name="drinks" value="no-alcohol">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="main-label">Есть ли у вас аллергии или особенности питания, которые важно учесть?</label>
+                    <textarea name="diet" placeholder="Напишите здесь..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">отправить</button>
+            </form>
+        </section>
+
+        <!-- БЛОК 7: ТАЙМЕР ДО СВАДЬБЫ -->
+        <section class="countdown-section fade-section" id="section7">
+            <h2 class="countdown-title">До встречи</h2>
+            <div class="countdown-subtitle">we are waiting</div>
+            <!-- Можно использовать то же фото пары или отдельное -->
+            <img src="молодожены.jpg" alt="До встречи" class="countdown-photo">
+            
+            <div class="timer-grid" id="timer">
+                <div class="timer-item">
+                    <div class="timer-number" id="days">00</div>
+                    <div class="timer-label">дней</div>
+                </div>
+                <div class="timer-item">
+                    <div class="timer-number" id="hours">00</div>
+                    <div class="timer-label">часов</div>
+                </div>
+                <div class="timer-item">
+                    <div class="timer-number" id="minutes">00</div>
+                    <div class="timer-label">минут</div>
+                </div>
+                <div class="timer-item">
+                    <div class="timer-number" id="seconds">00</div>
+                    <div class="timer-label">секунд</div>
+                </div>
+            </div>
+            <p class="countdown-message">
+                С нетерпением ждём этот особенный день,<br>чтобы разделить его с вами.
+            </p>
+        </section>
+
+        <div class="spacer"></div>
+    </div>
+
+    <script>
+        (function() {
+            // --- Управление музыкой ---
+            const music = document.getElementById('bgMusic');
+            const btn = document.getElementById('musicToggle');
+            const playIco = document.getElementById('playIcon');
+            const pauseIco = document.getElementById('pauseIcon');
+            const label = document.querySelector('.player-label');
+
+            if (music && btn && playIco && pauseIco && label) {
+                btn.addEventListener('click', () => {
+                    if (music.paused) {
+                        music.play().then(() => {
+                            playIco.style.display = 'none';
+                            pauseIco.style.display = 'block';
+                            label.textContent = 'Pause Music';
+                        }).catch(e => {
+                            console.warn('Автовоспроизведение заблокировано.');
+                            playIco.style.display = 'none';
+                            pauseIco.style.display = 'block';
+                            label.textContent = 'Pause Music';
+                        });
+                    } else {
+                        music.pause();
+                        playIco.style.display = 'block';
+                        pauseIco.style.display = 'none';
+                        label.textContent = 'Play Music';
+                    }
+                });
+            }
+
+            // --- АНИМАЦИЯ ПОЯВЛЕНИЯ ПРИ СКРОЛЛЕ (Intersection Observer) ---
+            const sections = document.querySelectorAll('.fade-section');
+            const photoWrapper = document.getElementById('mainPhotoWrapper');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        if (entry.target.id === 'section1' && photoWrapper) {
+                            photoWrapper.classList.add('visible');
+                        }
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -20px 0px' });
+
+            sections.forEach(section => observer.observe(section));
+            if (photoWrapper) observer.observe(photoWrapper);
+
+            window.addEventListener('load', () => {
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top < window.innerHeight * 0.85) {
+                        section.classList.add('visible');
+                        if (section.id === 'section1' && photoWrapper) {
+                            photoWrapper.classList.add('visible');
+                        }
+                    }
+                });
+                if (photoWrapper) {
+                    const rect = photoWrapper.getBoundingClientRect();
+                    if (rect.top < window.innerHeight * 0.85) photoWrapper.classList.add('visible');
+                }
+            });
+
+            // --- ТАЙМЕР ОБРАТНОГО ОТСЧЁТА ---
+            // Устанавливаем дату свадьбы: 12 сентября 2026 года, 15:00 (по местному времени)
+            const weddingDate = new Date(2026, 8, 12, 15, 0, 0).getTime(); // месяц 8 = сентябрь
+
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const distance = weddingDate - now;
+
+                if (distance < 0) {
+                    // Если дата прошла — показываем нули и останавливаем обновление
+                    daysEl.innerText = '00';
+                    hoursEl.innerText = '00';
+                    minutesEl.innerText = '00';
+                    secondsEl.innerText = '00';
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                daysEl.innerText = days < 10 ? '0' + days : days;
+                hoursEl.innerText = hours < 10 ? '0' + hours : hours;
+                minutesEl.innerText = minutes < 10 ? '0' + minutes : minutes;
+                secondsEl.innerText = seconds < 10 ? '0' + seconds : seconds;
+            }
+
+            // Запускаем таймер и обновляем каждую секунду
+            updateTimer();
+            const timerInterval = setInterval(updateTimer, 1000);
+
+            // Очистка интервала при необходимости (для хорошего тона)
+            window.addEventListener('beforeunload', () => clearInterval(timerInterval));
+
+            // --- ОБРАБОТКА АНКЕТЫ ---
+            const form = document.getElementById('rsvpForm');
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    alert('Спасибо! Ваша анкета отправлена. (Демо-режим)');
+                });
+            }
+        })();
+    </script>
+    <!-- 
+        Для работы замените изображения 'молодожены.jpg', 'усадьба.jpg' 
+        и аудиофайл 'klava.mp3' на свои.
+    -->
+</body>
+</html>
